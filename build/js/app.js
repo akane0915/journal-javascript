@@ -1,1 +1,72 @@
-!function r(n,o,t){function e(f,i){if(!o[f]){if(!n[f]){var a="function"==typeof require&&require;if(!i&&a)return a(f,!0);if(u)return u(f,!0);var s=new Error("Cannot find module '"+f+"'");throw s.code="MODULE_NOT_FOUND",s}var d=o[f]={exports:{}};n[f][0].call(d.exports,function(r){var o=n[f][1][r];return e(o||r)},d,d.exports,r,n,o,t)}return o[f].exports}for(var u="function"==typeof require&&require,f=0;f<t.length;f++)e(t[f]);return e}({1:[function(r,n,o){function t(r,n){this.title=r,this.body=n}t.prototype.numberOfWords=function(){return arrayOfWords=this.body.split(" "),numOfWords=arrayOfWords.length,numOfWords},o.entryModule=t},{}],2:[function(r,n,o){var t=r("./../js/journal.js").entryModule;$(function(){$("#journal-form").submit(function(r){r.preventDefault();var n=$("#title").val(),o=$("#body").val(),e=new t(n,o).numberOfWords();$("#output").append("Number of words in journal entry body = "+e)})})},{"./../js/journal.js":1}]},{},[2]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+function Entry(title, body) {
+  this.title = title;
+  this.body = body;
+}
+
+Entry.prototype.numberOfWords = function() {
+  arrayOfWords = this.body.split(" ");
+  numOfWords = arrayOfWords.length;
+  return numOfWords;
+};
+
+Entry.prototype.numberOfVowels = function() {
+  arrayOfVowels = ["a","e","i","o","u"];
+  arrayOfLetters = this.body.split("");
+  numOfVowels = 0;
+  arrayOfLetters.forEach(function(letter){
+    if (arrayOfVowels.includes(letter)) {
+      numOfVowels += 1;
+    }
+  });
+  return numOfVowels;
+}
+
+Entry.prototype.numberOfConsonants = function() {
+  arrayOfConsonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "y", "z"];
+  arrayOfLetters = this.body.split("");
+  numOfConsonants = 0;
+  arrayOfLetters.forEach(function(letter){
+    if (arrayOfConsonants.includes(letter)) {
+      numOfConsonants += 1;
+    }
+  });
+  return numOfConsonants;
+}
+
+Entry.prototype.getTeaser = function () {
+  debugger;
+  firstSentence = this.body.split(".")[0];
+  teaserArray = firstSentence.split(" ");
+  if (teaserArray.length > 8) {
+    teaserArray = teaserArray.slice(0, 8);
+  }
+  teaserSentence = teaserArray.join(" ");
+  return teaserSentence;
+}
+
+exports.entryModule = Entry;
+
+},{}],2:[function(require,module,exports){
+var Entry = require("./../js/journal.js").entryModule;
+
+$(function(){
+  $('#journal-form').submit(function(event) {
+    event.preventDefault();
+    var title = $('#title').val();
+    var body = $('#body').val();
+    var newEntry = new Entry(title, body);
+    var numberOfWords = newEntry.numberOfWords();
+    var numberOfVowels = newEntry.numberOfVowels();
+    var numberOfConsonants = newEntry.numberOfConsonants();
+    debugger;
+    var teaserSentence = newEntry.getTeaser();
+    $('#output').text("");
+    $('#output').append(`<p>Number of words in journal entry body = ${numberOfWords}</p>`);
+    $('#output').append(`<p>Number of vowels in journal entry body = ${numberOfVowels}</p>`);
+    $('#output').append(`<p>Number of consonants in journal entry body = ${numberOfConsonants}</p>`);
+    $('#output').append(`<p>Teaser sentence = ${teaserSentence}</p>`);
+  });
+}); //doc ready close
+
+},{"./../js/journal.js":1}]},{},[2]);
